@@ -33,5 +33,6 @@ public class MarkerTarget {
     private Date targetDeadline;
 
     @Column(name = "MARKER_TARGET_STATUS")
+    @Enumerated(EnumType.STRING)
     private MarkerTargetStatus markerTargetStatus;
 }

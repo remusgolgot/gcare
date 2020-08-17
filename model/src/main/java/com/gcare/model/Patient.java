@@ -22,6 +22,7 @@ public class Patient {
     private Timestamp dateOfBirth;
 
     @Column(name = "GENDER", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Column(name = "FIRST_NAME", nullable = false)

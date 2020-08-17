@@ -33,6 +33,7 @@ public class PatientCondition {
     private Date lastUpdate;
 
     @Column(name = "STATUS", nullable = false)
+    @Enumerated(EnumType.STRING)
     private MedicalConditionStatus medicalConditionStatus;
 
 }

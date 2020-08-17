@@ -2,8 +2,8 @@ package com.gcare.model;
 
 public enum Gender {
 
-    MALE("M"),
-    FEMALE("F");
+    M("M"),
+    F("F");
 
     private final String gender;
 

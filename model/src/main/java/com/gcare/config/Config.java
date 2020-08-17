@@ -8,6 +8,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate5.HibernateExceptionTranslator;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -21,22 +22,21 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories(basePackages = "com.gcare.dao")
 @ComponentScan(basePackages = "com.gcare.model")
+@PropertySource(value={"classpath:application.properties"})
 @EnableTransactionManagement
-class Config {
+public class Config {
 
+    @Value("${gcare.datasource.password}")
+    private String datasourcePassword;
     @Value("${gcare.datasource.url}")
     private String datasourceUrl;
     @Value("${gcare.datasource.username}")
     private String datasourceUsername;
-    @Value("${gcare.datasource.password}")
-    private String datasourcePassword;
+
 
     @Bean
     public DataSource dataSource() {
 
-        System.out.println(datasourcePassword);
-        System.out.println(datasourceUsername);
-        System.out.println(datasourceUrl);
         try {
             return DataSourceBuilder.create()
                     .driverClassName("com.mysql.cj.jdbc.Driver")

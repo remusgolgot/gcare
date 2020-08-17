@@ -19,6 +19,7 @@ public class Consultation {
     private Integer id;
 
     @Column(name = "CONSULTATION_TYPE")
+    @Enumerated(EnumType.STRING)
     private ConsultationType consultationType;
 
     @Column(name = "NOTES")

@@ -18,10 +18,14 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "UUID", nullable = false)
+    private String uuid;
+
     @Column(name = "DATE_OF_BIRTH", nullable = false)
     private Timestamp dateOfBirth;
 
     @Column(name = "GENDER", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Column(name = "FIRST_NAME", nullable = false)
@@ -49,6 +53,7 @@ public class Doctor {
     private String description;
 
     @Column(name = "PRIMARY_SPECIALTY", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Specialty primarySpecialty;
 
 }
