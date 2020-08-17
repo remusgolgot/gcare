@@ -2,6 +2,7 @@ package com.gcare.services;
 
 import com.gcare.dao.DoctorDAO;
 import com.gcare.model.Consultation;
+import com.gcare.model.Doctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +26,9 @@ public class DoctorService {
 
     public List listDoctors() {
             return doctorDAO.list();
+    }
+
+    public void addDoctor(Doctor doctor) {
+        doctorDAO.insert(doctor);
     }
 }

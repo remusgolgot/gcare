@@ -5,7 +5,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Data
 @EqualsAndHashCode
@@ -22,7 +24,8 @@ public class Doctor {
     private String uuid;
 
     @Column(name = "DATE_OF_BIRTH", nullable = false)
-    private Timestamp dateOfBirth;
+    @Temporal(TemporalType.DATE)
+    private Date dateOfBirth;
 
     @Column(name = "GENDER", nullable = false)
     @Enumerated(EnumType.STRING)

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -40,5 +41,25 @@ public class DoctorController {
         String response = new Gson().toJson(results);
         return ResponseEntity.status(status).body(response);
     }
+
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public ResponseEntity createDoctor(@Valid @RequestBody Doctor doctor) {
+        HttpStatus status = HttpStatus.OK;
+        ResponseEntity responseEntity;
+        String responseString = "";
+        try {
+            doctorService.addDoctor(doctor);
+            responseString = "Doctor successfully added";
+        } catch (Exception e) {
+           status = HttpStatus.INTERNAL_SERVER_ERROR;
+           responseString = "Could not add doctor : " + e.getMessage();
+        } finally {
+            String response = new Gson().toJson(responseString);
+            responseEntity = ResponseEntity.status(status).body(response);
+        }
+        return responseEntity;
+
+    }
+
 
 }

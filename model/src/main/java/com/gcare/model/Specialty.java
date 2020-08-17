@@ -12,7 +12,8 @@ public enum Specialty {
     ONCOLOGY("Oncology"),
     CARDIOLOGY("Cardiology"),
     INFECTIOUS_DISEASE("InfectiousDisease"),
-    RHEUMATOLOGY("Rheumatology");
+    RHEUMATOLOGY("Rheumatology"),
+    OTHER("Other");
 
     private final String specialtyName;
 

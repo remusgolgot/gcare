@@ -11,7 +11,6 @@ public class DoctorDAO extends GenericDAO {
 
     @Transactional
     public List<Doctor> getByUUID(String doctorUUID) {
-        System.out.println(doctorUUID);
         return em.createQuery(
                 "SELECT c FROM Doctor c WHERE c.uuid = '" + doctorUUID + "'")
                 .getResultList();

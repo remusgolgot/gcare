@@ -18,21 +18,25 @@ public class Consultation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "CONSULTATION_TYPE")
+    @Column(name = "CONSULTATION_TYPE", nullable = false)
     @Enumerated(EnumType.STRING)
     private ConsultationType consultationType;
+
+    @Column(name = "CONSULTATION_STATE", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ConsultationState consultationState;
 
     @Column(name = "NOTES")
     private String notes;
 
-    @Column(name = "DATE")
+    @Column(name = "DATE", nullable = false)
     private Date date;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "PATIENT_ID", referencedColumnName = "id")
     private Patient patient;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "DOCTOR_ID", referencedColumnName = "id")
     private Doctor doctor;
 
