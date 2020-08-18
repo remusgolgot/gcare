@@ -18,8 +18,6 @@ public class DoctorDAO extends GenericDAO {
 
     @Transactional
     public List<Doctor> list() {
-        return em.createQuery(
-                "SELECT c FROM " + Doctor.class.getSimpleName() + " c ")
-                .getResultList();
+       return list(Doctor.class);
     }
 }

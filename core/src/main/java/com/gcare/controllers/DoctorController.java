@@ -1,5 +1,6 @@
 package com.gcare.controllers;
 
+import com.gcare.messages.Responses;
 import com.gcare.model.Doctor;
 import com.gcare.services.DoctorService;
 import com.google.gson.Gson;
@@ -18,6 +19,7 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
+    //TODO : add HashMap as result
     @GetMapping(value = "/{doctorUUID}/consultations")
     public ResponseEntity listConsultations(@PathVariable(value = "doctorUUID") String doctorUUID) {
         List results = doctorService.getConsultationsForDoctor(doctorUUID);
@@ -26,6 +28,7 @@ public class DoctorController {
         return ResponseEntity.status(status).body(response);
     }
 
+    //TODO : add HashMap as result
     @GetMapping(value = "/{doctorUUID}")
     public ResponseEntity getDoctorByUUID(@PathVariable(value = "doctorUUID") String doctorUUID) {
         List results = doctorService.getDoctorByUUID(doctorUUID);
@@ -34,6 +37,7 @@ public class DoctorController {
         return ResponseEntity.status(status).body(response);
     }
 
+    //TODO : add HashMap as result
     @GetMapping
     public ResponseEntity listDoctors() {
         List<Doctor> results = doctorService.listDoctors();
@@ -49,10 +53,10 @@ public class DoctorController {
         String responseString = "";
         try {
             doctorService.addDoctor(doctor);
-            responseString = "Doctor successfully added";
+            responseString = Responses.SUCCESSFULLY_ADDED_DOCTOR;
         } catch (Exception e) {
            status = HttpStatus.INTERNAL_SERVER_ERROR;
-           responseString = "Could not add doctor : " + e.getMessage();
+           responseString = Responses.FAILED_TO_CREATE_DOCTOR + e.getMessage();
         } finally {
             String response = new Gson().toJson(responseString);
             responseEntity = ResponseEntity.status(status).body(response);

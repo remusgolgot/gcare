@@ -49,4 +49,11 @@ public class GenericDAO {
                 .getFirstResult();
     }
 
+    @Transactional
+    public <E> List<E> list(Class<E> clazz) {
+        return em.createQuery(
+                "SELECT c FROM " + clazz.getSimpleName() + " c ")
+                .getResultList();
+    }
+
 }
