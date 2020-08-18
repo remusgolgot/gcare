@@ -1,7 +1,9 @@
-package com.gcare.model;
+package com.gcare.dao;
 
 import com.gcare.config.TestConfig;
-import com.gcare.dao.GenericDAO;
+import com.gcare.model.Doctor;
+import com.gcare.model.Gender;
+import com.gcare.model.Specialty;
 import lombok.SneakyThrows;
 import org.junit.After;
 import org.junit.Assert;
@@ -11,24 +13,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAmount;
-import java.util.Date;
 import java.util.List;
+
+import static com.gcare.dao.EntityUtils.createDoctorEntity;
+import static com.gcare.utils.DataFormatUtils.DATE_FORMAT;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
-public class DoctorTest {
+public class DoctorDAOTest {
 
     @Autowired
     private GenericDAO genericDAO;
 
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
 
     @After
     public void cleanup() {
@@ -150,25 +149,9 @@ public class DoctorTest {
     @SneakyThrows
     public void createDoctorDateOfBirthInTheFuture() {
         Doctor doctor = createDoctorEntity();
-        doctor.setDateOfBirth(format.parse("3018-01-01"));
+        doctor.setDateOfBirth(DATE_FORMAT.parse("3018-01-01"));
         genericDAO.insert(doctor);
     }
 
-    @SneakyThrows
-    private Doctor createDoctorEntity() {
-
-        Doctor doctor = new Doctor();
-        doctor.setAddressCity("New York");
-        doctor.setAddressCounty("NY");
-        doctor.setAddressCountry("USA");
-        doctor.setFirstName("Dan");
-        doctor.setLastName("Ives");
-        doctor.setGender(Gender.F);
-        doctor.setHourlyRate(12);
-        doctor.setPrimarySpecialty(Specialty.CARDIOLOGY);
-        doctor.setDateOfBirth(format.parse("2019-01-01"));
-        doctor.setUuid("44878745a7c5bbbf");
-        return doctor;
-    }
 
 }

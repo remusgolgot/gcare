@@ -10,10 +10,10 @@ import java.util.List;
 public class DoctorDAO extends GenericDAO {
 
     @Transactional
-    public List<Doctor> getByUUID(String doctorUUID) {
-        return em.createQuery(
+    public Doctor getByUUID(String doctorUUID) {
+        return (Doctor) em.createQuery(
                 "SELECT c FROM Doctor c WHERE c.uuid = '" + doctorUUID + "'")
-                .getResultList();
+                .getResultList().stream().findFirst().orElse(null);
     }
 
     @Transactional

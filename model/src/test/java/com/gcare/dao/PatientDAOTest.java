@@ -1,7 +1,9 @@
-package com.gcare.model;
+package com.gcare.dao;
 
 import com.gcare.config.TestConfig;
 import com.gcare.dao.GenericDAO;
+import com.gcare.model.Gender;
+import com.gcare.model.Patient;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,9 +16,11 @@ import javax.persistence.PersistenceException;
 import java.sql.Timestamp;
 import java.util.List;
 
+import static com.gcare.dao.EntityUtils.createPatientEntity;
+
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
-public class PatientTest {
+public class PatientDAOTest {
 
     @Autowired
     private GenericDAO genericDAO;
@@ -74,16 +78,6 @@ public class PatientTest {
         genericDAO.insert(patient);
     }
 
-    private Patient createPatientEntity() {
-        Patient patient = new Patient();
-        patient.setAddressCity("Cluj-Napoca");
-        patient.setAddressCounty("Cluj");
-        patient.setAddressCountry("Romania");
-        patient.setFirstName("Dan");
-        patient.setLastName("Suzuki");
-        patient.setGender(Gender.M);
-        patient.setDateOfBirth(new Timestamp(5));
-        return patient;
-    }
+
 
 }

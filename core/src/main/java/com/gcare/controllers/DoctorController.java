@@ -1,6 +1,7 @@
 package com.gcare.controllers;
 
 import com.gcare.messages.Responses;
+import com.gcare.model.Consultation;
 import com.gcare.model.Doctor;
 import com.gcare.services.DoctorService;
 import com.google.gson.Gson;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -19,31 +21,38 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    //TODO : add HashMap as result
     @GetMapping(value = "/{doctorUUID}/consultations")
-    public ResponseEntity listConsultations(@PathVariable(value = "doctorUUID") String doctorUUID) {
-        List results = doctorService.getConsultationsForDoctor(doctorUUID);
-        HttpStatus status = HttpStatus.OK;
-        String response = results.toString();
-        return ResponseEntity.status(status).body(response);
+    public HashMap<String, Object> listConsultations(@PathVariable(value = "doctorUUID") String doctorUUID) {
+        HashMap<String, Object> map = new HashMap<>();
+        Doctor doctor = doctorService.getDoctorByUUID(doctorUUID);
+        if (doctor == null) {
+            map.put("error", Responses.DOCTOR_NOT_FOUND_FOR_UUID);
+        } else {
+            List<Consultation> consultations = doctorService.getConsultationsForDoctor(doctorUUID);
+            map.put("consultations", consultations);
+            map.put("nrOfConsultations", consultations.size());
+        }
+        return map;
     }
 
-    //TODO : add HashMap as result
     @GetMapping(value = "/{doctorUUID}")
-    public ResponseEntity getDoctorByUUID(@PathVariable(value = "doctorUUID") String doctorUUID) {
-        List results = doctorService.getDoctorByUUID(doctorUUID);
-        HttpStatus status = HttpStatus.OK;
-        String response = results.toString();
-        return ResponseEntity.status(status).body(response);
+    public HashMap<String, Object> getDoctorByUUID(@PathVariable(value = "doctorUUID") String doctorUUID) {
+        Doctor doctor = doctorService.getDoctorByUUID(doctorUUID);
+        HashMap<String, Object> map = new HashMap<>();
+        if (doctor == null) {
+            map.put("error", Responses.DOCTOR_NOT_FOUND_FOR_UUID);
+        } else {
+            map.put("doctor", doctor);
+        }
+        return map;
     }
 
-    //TODO : add HashMap as result
     @GetMapping
-    public ResponseEntity listDoctors() {
-        List<Doctor> results = doctorService.listDoctors();
-        HttpStatus status = HttpStatus.OK;
-        String response = new Gson().toJson(results);
-        return ResponseEntity.status(status).body(response);
+    public HashMap<String, Object> listDoctors() {
+        List<Doctor> resultList = doctorService.listDoctors();
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("doctors", resultList);
+        return map;
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
@@ -55,8 +64,8 @@ public class DoctorController {
             doctorService.addDoctor(doctor);
             responseString = Responses.SUCCESSFULLY_ADDED_DOCTOR;
         } catch (Exception e) {
-           status = HttpStatus.INTERNAL_SERVER_ERROR;
-           responseString = Responses.FAILED_TO_CREATE_DOCTOR + e.getMessage();
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            responseString = Responses.FAILED_TO_CREATE_DOCTOR + e.getMessage();
         } finally {
             String response = new Gson().toJson(responseString);
             responseEntity = ResponseEntity.status(status).body(response);
@@ -64,6 +73,4 @@ public class DoctorController {
         return responseEntity;
 
     }
-
-
 }

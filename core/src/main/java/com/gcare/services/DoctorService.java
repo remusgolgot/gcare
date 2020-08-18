@@ -20,7 +20,7 @@ public class DoctorService {
         return list.stream().filter(c -> c.getDoctor().getUuid().equals(doctorUUID)).collect(Collectors.toList());
     }
 
-    public List getDoctorByUUID(String doctorUUID) {
+    public Doctor getDoctorByUUID(String doctorUUID) {
        return doctorDAO.getByUUID(doctorUUID);
     }
 
