@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.Objects;
 
 @Data
 @EqualsAndHashCode
@@ -73,4 +74,27 @@ public class Doctor {
     @NotNull
     private Specialty primarySpecialty;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Doctor doctor = (Doctor) o;
+        return Objects.equals(uuid, doctor.uuid) &&
+                Objects.equals(dateOfBirth, doctor.dateOfBirth) &&
+                gender == doctor.gender &&
+                Objects.equals(firstName, doctor.firstName) &&
+                Objects.equals(lastName, doctor.lastName) &&
+                Objects.equals(middleName, doctor.middleName) &&
+                Objects.equals(addressCity, doctor.addressCity) &&
+                Objects.equals(addressCounty, doctor.addressCounty) &&
+                Objects.equals(addressCountry, doctor.addressCountry) &&
+                Objects.equals(hourlyRate, doctor.hourlyRate) &&
+                Objects.equals(description, doctor.description) &&
+                primarySpecialty == doctor.primarySpecialty;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, dateOfBirth, gender, firstName, lastName, middleName, addressCity, addressCounty, addressCountry, hourlyRate, description, primarySpecialty);
+    }
 }

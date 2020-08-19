@@ -11,6 +11,7 @@
     <modules>
         <module>model</module>
         <module>core</module>
+        <module>automation</module>
     </modules>
 
     <properties>

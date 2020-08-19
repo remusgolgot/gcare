@@ -2,8 +2,6 @@ package com.gcare.dao;
 
 import com.gcare.config.TestConfig;
 import com.gcare.model.Doctor;
-import com.gcare.model.Gender;
-import com.gcare.model.Specialty;
 import lombok.SneakyThrows;
 import org.junit.After;
 import org.junit.Assert;
@@ -14,11 +12,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static com.gcare.dao.EntityUtils.createDoctorEntity;
-import static com.gcare.utils.DataFormatUtils.DATE_FORMAT;
+import static com.gcare.utils.DateFormatUtils.DATE_FORMAT;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -26,8 +23,6 @@ public class DoctorDAOTest {
 
     @Autowired
     private GenericDAO genericDAO;
-
-
 
     @After
     public void cleanup() {

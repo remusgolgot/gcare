@@ -7,8 +7,7 @@ import com.gcare.model.Specialty;
 import lombok.SneakyThrows;
 import java.sql.Timestamp;
 
-
-import static com.gcare.utils.DataFormatUtils.DATE_FORMAT;
+import static com.gcare.utils.DateFormatUtils.DATE_FORMAT;
 
 public class EntityUtils {
 
