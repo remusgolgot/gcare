@@ -28,7 +28,16 @@ public class DoctorService {
             return doctorDAO.list();
     }
 
-    public void addDoctor(Doctor doctor) {
-        doctorDAO.insert(doctor);
+    public Doctor addDoctor(Doctor doctor) {
+        return doctorDAO.insert(doctor);
+    }
+
+    public void deleteDoctor(String doctorUUID) {
+        Doctor doctor = doctorDAO.getByUUID(doctorUUID);
+        if (doctor == null) {
+
+        } else {
+            doctorDAO.delete(doctor);
+        }
     }
 }

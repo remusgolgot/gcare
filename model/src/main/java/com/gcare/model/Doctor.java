@@ -75,6 +75,25 @@ public class Doctor {
     private Specialty primarySpecialty;
 
     @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", uuid='" + uuid + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", gender=" + gender +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", addressCity='" + addressCity + '\'' +
+                ", addressCounty='" + addressCounty + '\'' +
+                ", addressCountry='" + addressCountry + '\'' +
+                ", hourlyRate=" + hourlyRate +
+                ", description='" + description + '\'' +
+                ", primarySpecialty=" + primarySpecialty +
+                "}";
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
