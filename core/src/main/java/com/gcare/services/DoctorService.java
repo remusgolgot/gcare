@@ -21,11 +21,11 @@ public class DoctorService {
     }
 
     public Doctor getDoctorByUUID(String doctorUUID) {
-       return doctorDAO.getByUUID(doctorUUID);
+        return doctorDAO.getByUUID(doctorUUID);
     }
 
     public List listDoctors() {
-            return doctorDAO.list();
+        return doctorDAO.list();
     }
 
     public Doctor addDoctor(Doctor doctor) {
@@ -34,9 +34,7 @@ public class DoctorService {
 
     public void deleteDoctor(String doctorUUID) {
         Doctor doctor = doctorDAO.getByUUID(doctorUUID);
-        if (doctor == null) {
-
-        } else {
+        if (doctor != null) {
             doctorDAO.delete(doctor);
         }
     }

@@ -11,10 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
 import java.util.List;
-
-import static com.gcare.messages.Responses.SUCCESSFULLY_DELETED_DOCTOR;
 
 @RestController
 @RequestMapping("/doctors")
@@ -23,7 +21,8 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    private static final Gson gson = new GsonBuilder().create();
+    private static final String dateFormat = "yyyy-MM-dd";
+    private static final Gson gson = new GsonBuilder().setDateFormat(dateFormat).create();
 
     @GetMapping(value = "/{doctorUUID}/consultations")
     public ResponseEntity listConsultations(@PathVariable(value = "doctorUUID") String doctorUUID) {
@@ -55,6 +54,9 @@ public class DoctorController {
     @GetMapping
     public ResponseEntity listDoctors() {
         List<Doctor> resultList = doctorService.listDoctors();
+        if (resultList.size() > 0) {
+            System.out.println(resultList.get(0).toString());
+        }
         String data = gson.toJson(resultList);
         JsonArray jsonArray = new JsonParser().parse(data).getAsJsonArray();
         JsonObject jsonResponse = new JsonObject();
@@ -94,7 +96,7 @@ public class DoctorController {
                 errorString = Responses.FAILED_TO_DELETE_DOCTOR + " : " + Responses.DOCTOR_NOT_FOUND_FOR_UUID;
             } else {
                 doctorService.deleteDoctor(doctorUUID);
-                jsonResponse.addProperty("response", SUCCESSFULLY_DELETED_DOCTOR);
+                jsonResponse.addProperty("response", Responses.SUCCESSFULLY_DELETED_DOCTOR);
             }
         } catch (Exception e) {
             errorString = Responses.FAILED_TO_DELETE_DOCTOR + " : " + e.getMessage();

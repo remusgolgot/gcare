@@ -1,6 +1,5 @@
 package com.gcare.model;
 
-import com.gcare.validators.ValidateEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

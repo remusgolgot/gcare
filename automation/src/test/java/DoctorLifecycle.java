@@ -51,6 +51,7 @@ public class DoctorLifecycle {
         Assert.assertEquals(1, array.size());
         Doctor doctorAfterGet = gson.fromJson(array.get(0), Doctor.class);
         Assert.assertEquals(doctorAfterGet, doctorToCreate);
+        //TODO: add delete call to cleanup
     }
 
 }
