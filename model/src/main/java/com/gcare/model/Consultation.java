@@ -5,21 +5,20 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.sql.Date;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Data
 @EqualsAndHashCode
 @ToString(callSuper = true)
 @Entity
 @Table(name = "CONSULTATION")
-public class Consultation {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Consultation extends BaseEntity {
 
     @Column(name = "CONSULTATION_TYPE", nullable = false)
     @Enumerated(EnumType.STRING)
+    @NotNull
     private ConsultationType consultationType;
 
     @Column(name = "CONSULTATION_STATE", nullable = false)
@@ -30,14 +29,19 @@ public class Consultation {
     private String notes;
 
     @Column(name = "DATE", nullable = false)
+    @Temporal(TemporalType.DATE)
+    @NotNull
+    @Future
     private Date date;
 
     @OneToOne
     @JoinColumn(name = "PATIENT_ID", referencedColumnName = "id")
+    @NotNull
     private Patient patient;
 
     @OneToOne
     @JoinColumn(name = "DOCTOR_ID", referencedColumnName = "id")
+    @NotNull
     private Doctor doctor;
 
 }

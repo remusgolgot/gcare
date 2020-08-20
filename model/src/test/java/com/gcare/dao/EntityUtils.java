@@ -11,15 +11,17 @@ import static com.gcare.utils.DateFormatUtils.DATE_FORMAT;
 
 public class EntityUtils {
 
+    @SneakyThrows
     static Patient createPatientEntity() {
         Patient patient = new Patient();
         patient.setAddressCity("Cluj-Napoca");
         patient.setAddressCounty("Cluj");
         patient.setAddressCountry("Romania");
+        patient.setUuid("44878745a7c5bbbf");
         patient.setFirstName("Dan");
         patient.setLastName("Suzuki");
         patient.setGender(Gender.M);
-        patient.setDateOfBirth(new Timestamp(5));
+        patient.setDateOfBirth(DATE_FORMAT.parse("2019-01-01"));
         return patient;
     }
 

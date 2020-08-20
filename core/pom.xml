@@ -25,6 +25,10 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.gcare</groupId>
             <artifactId>model</artifactId>
             <version>1.0-SNAPSHOT</version>

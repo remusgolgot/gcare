@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.PersistenceException;
+import javax.validation.ConstraintViolationException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -64,10 +65,17 @@ public class PatientDAOTest {
         genericDAO.insert(patient);
     }
 
-    @Test(expected = PersistenceException.class)
+    @Test(expected = ConstraintViolationException.class)
     public void createPatientMissingDateOfBirth() {
         Patient patient = createPatientEntity();
         patient.setDateOfBirth(null);
+        genericDAO.insert(patient);
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void createPatientMissingUUID() {
+        Patient patient = createPatientEntity();
+        patient.setUuid(null);
         genericDAO.insert(patient);
     }
 

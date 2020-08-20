@@ -3,7 +3,9 @@ package com.gcare.controllers;
 import com.gcare.messages.Responses;
 import com.gcare.model.Consultation;
 import com.gcare.model.Doctor;
+import com.gcare.model.DoctorDto;
 import com.gcare.services.DoctorService;
+import com.gcare.utils.GsonUtils;
 import com.google.gson.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 @RestController
@@ -21,30 +22,27 @@ public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    private static final String dateFormat = "yyyy-MM-dd";
-    private static final Gson gson = new GsonBuilder().setDateFormat(dateFormat).create();
-
-    @GetMapping(value = "/{doctorUUID}/consultations")
-    public ResponseEntity listConsultations(@PathVariable(value = "doctorUUID") String doctorUUID) {
+    @GetMapping(value = "/{doctorID}/consultations")
+    public ResponseEntity listConsultations(@PathVariable(value = "doctorID") Integer doctorID) {
         JsonObject jsonResponse = new JsonObject();
-        Doctor doctor = doctorService.getDoctorByUUID(doctorUUID);
+        Doctor doctor = doctorService.getDoctorById(doctorID);
         if (doctor == null) {
-            jsonResponse.addProperty("error", Responses.DOCTOR_NOT_FOUND_FOR_UUID);
+            jsonResponse.addProperty("error", Responses.DOCTOR_NOT_FOUND_FOR_ID);
         } else {
-            List<Consultation> consultations = doctorService.getConsultationsForDoctor(doctorUUID);
-            jsonResponse.addProperty("consultations", gson.toJson(consultations));
+            List<Consultation> consultations = doctorService.getConsultationsForDoctor(doctorID);
+            jsonResponse.addProperty("consultations", GsonUtils.gson.toJson(consultations));
             jsonResponse.addProperty("nrOfConsultations", consultations.size());
         }
         return ResponseEntity.status(HttpStatus.OK).body(jsonResponse.toString());
     }
 
-    @GetMapping(value = "/{doctorUUID}")
-    public ResponseEntity getDoctorByUUID(@PathVariable(value = "doctorUUID") String doctorUUID) {
+    @GetMapping(value = "/{doctorID}")
+    public ResponseEntity getDoctorByID(@PathVariable(value = "doctorID") Integer doctorID) {
         JsonObject jsonResponse = new JsonObject();
-        Doctor doctor = doctorService.getDoctorByUUID(doctorUUID);
+        Doctor doctor = doctorService.getDoctorById(doctorID);
 
         if (doctor == null) {
-            jsonResponse.addProperty("error", Responses.DOCTOR_NOT_FOUND_FOR_UUID);
+            jsonResponse.addProperty("error", Responses.DOCTOR_NOT_FOUND_FOR_ID);
         } else {
             jsonResponse.addProperty("doctor", doctor.toString());
         }
@@ -54,10 +52,8 @@ public class DoctorController {
     @GetMapping
     public ResponseEntity listDoctors() {
         List<Doctor> resultList = doctorService.listDoctors();
-        if (resultList.size() > 0) {
-            System.out.println(resultList.get(0).toString());
-        }
-        String data = gson.toJson(resultList);
+
+        String data = GsonUtils.gson.toJson(resultList);
         JsonArray jsonArray = new JsonParser().parse(data).getAsJsonArray();
         JsonObject jsonResponse = new JsonObject();
         jsonResponse.add("doctors", jsonArray);
@@ -66,36 +62,36 @@ public class DoctorController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity createDoctor(@Valid @RequestBody Doctor doctor) {
+    public ResponseEntity createDoctor(@Valid @RequestBody DoctorDto doctorDto) {
         String errorString = null;
-        Doctor doctorAdded;
+        Doctor doctorToAdd;
         JsonObject jsonResponse = new JsonObject();
         try {
-            doctorAdded = doctorService.addDoctor(doctor);
-            if (doctorAdded != null) {
-                jsonResponse.addProperty("doctor", doctorAdded.toString());
+            doctorToAdd = doctorService.addDoctor(doctorDto);
+            if (doctorToAdd != null) {
+                jsonResponse.addProperty("doctor", doctorToAdd.toString());
             }
             jsonResponse.addProperty("response", Responses.SUCCESSFULLY_ADDED_DOCTOR);
         } catch (Exception e) {
-            errorString = Responses.FAILED_TO_CREATE_DOCTOR + e.getMessage();
+            errorString = e.getMessage();
         } finally {
             if (errorString != null) {
-                jsonResponse.addProperty("error", errorString);
+                jsonResponse.addProperty("error", Responses.FAILED_TO_CREATE_DOCTOR + " " + errorString);
             }
         }
         return ResponseEntity.status(HttpStatus.OK).body(jsonResponse.toString());
     }
 
-    @DeleteMapping(value = "/{doctorUUID}")
-    public ResponseEntity deleteDoctorByUUID(@PathVariable(value = "doctorUUID") String doctorUUID) {
+    @DeleteMapping(value = "/{doctorID}")
+    public ResponseEntity deleteDoctorByID(@PathVariable(value = "doctorID") Integer doctorID) {
         String errorString = null;
         JsonObject jsonResponse = new JsonObject();
         try {
-            Doctor doctor = doctorService.getDoctorByUUID(doctorUUID);
+            Doctor doctor = doctorService.getDoctorById(doctorID);
             if (doctor == null) {
-                errorString = Responses.FAILED_TO_DELETE_DOCTOR + " : " + Responses.DOCTOR_NOT_FOUND_FOR_UUID;
+                errorString = Responses.FAILED_TO_DELETE_DOCTOR + " : " + Responses.DOCTOR_NOT_FOUND_FOR_ID;
             } else {
-                doctorService.deleteDoctor(doctorUUID);
+                doctorService.deleteDoctor(doctorID);
                 jsonResponse.addProperty("response", Responses.SUCCESSFULLY_DELETED_DOCTOR);
             }
         } catch (Exception e) {

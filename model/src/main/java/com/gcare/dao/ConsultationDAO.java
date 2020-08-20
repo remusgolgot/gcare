@@ -10,14 +10,14 @@ import java.util.List;
 public class ConsultationDAO extends GenericDAO {
 
     @Transactional
-    public List<Consultation> getDetails(Integer consultationID) {
-        return em.createQuery(
-                "SELECT c FROM Consultation c WHERE c.id = '" + consultationID + "'")
-                .getResultList();
+    public List<Consultation> list() {
+        return list(Consultation.class);
     }
 
     @Transactional
-    public List<Consultation> list() {
-        return list(Consultation.class);
+    public Consultation getByID(int id) {
+        return (Consultation) em.createQuery(
+                "SELECT c FROM Consultation c WHERE c.id = " + id)
+                .getResultList().stream().findFirst().orElse(null);
     }
 }

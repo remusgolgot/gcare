@@ -1,15 +1,24 @@
 package com.gcare.controllers;
 
 import com.gcare.messages.Responses;
+import com.gcare.model.Consultation;
+import com.gcare.model.ConsultationDto;
+import com.gcare.model.Doctor;
+import com.gcare.model.Patient;
 import com.gcare.services.ConsultationService;
+import com.gcare.services.DoctorService;
+import com.gcare.services.PatientService;
+import com.gcare.utils.ClassUtils;
+import com.gcare.utils.GsonUtils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -19,15 +28,91 @@ public class ConsultationController {
     @Autowired
     private ConsultationService consultationService;
 
-    @GetMapping(value = "/{consultationID}", produces = "application/json")
-    public HashMap<String, Object> getConsultationByID(@Valid @PathVariable(value = "consultationID") Integer consultationID) {
-        List consultations = consultationService.getConsultationDetails(consultationID);
-        HashMap<String, Object> map = new HashMap<>();
-        if (consultations.size() == 0) {
-            map.put("error", Responses.CONSULTATION_NOT_FOUND);
-        } else {
-            map.put("consultation", consultations);
-        }
-        return map;
+    @Autowired
+    private DoctorService doctorService;
+
+    @Autowired
+    private PatientService patientService;
+
+    @GetMapping
+    public ResponseEntity listDoctors() {
+        List<Consultation> resultList = consultationService.listConsultations();
+
+        String data = GsonUtils.gson.toJson(resultList);
+        JsonArray jsonArray = new JsonParser().parse(data).getAsJsonArray();
+        JsonObject jsonResponse = new JsonObject();
+        jsonResponse.add("consultations", jsonArray);
+        return ResponseEntity.status(HttpStatus.OK).body(jsonResponse.toString());
     }
+
+    @GetMapping(value = "/{consultationID}", produces = "application/json")
+    public ResponseEntity getConsultationByID(@Valid @PathVariable(value = "consultationID") Integer consultationID) {
+        Consultation consultation = consultationService.getConsultationByID(consultationID);
+        JsonObject jsonResponse = new JsonObject();
+        if (consultation == null) {
+            jsonResponse.addProperty("error", Responses.CONSULTATION_NOT_FOUND);
+        } else {
+            jsonResponse.add("consultation", new JsonParser().parse(GsonUtils.gson.toJson(consultation)).getAsJsonArray());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(jsonResponse.toString());
+    }
+
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity createConsultation(@Valid @RequestBody ConsultationDto consultationDTO) {
+        String errorString = null;
+        JsonObject jsonResponse = new JsonObject();
+        try {
+            Doctor doctor = doctorService.getDoctorById(consultationDTO.getDoctorID());
+            Patient patient = patientService.getPatientById(consultationDTO.getPatientID());
+            if (doctor == null) {
+                errorString = Responses.DOCTOR_NOT_FOUND_FOR_ID;
+            }
+            if (patient == null) {
+                errorString = Responses.PATIENT_NOT_FOUND_FOR_ID;
+            }
+           if (doctor != null && patient != null) {
+               Consultation consultationAdded = (Consultation) ClassUtils.copyPropertiesFromDTO(Consultation.class, consultationDTO);
+               consultationAdded.setDoctor(doctor);
+               consultationAdded.setPatient(patient);
+                consultationAdded = consultationService.addConsultation(consultationAdded);
+                if (consultationAdded != null) {
+                    jsonResponse.addProperty("consultation", consultationAdded.toString());
+                }
+                jsonResponse.addProperty("response", Responses.SUCCESSFULLY_ADDED_CONSULTATION);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            errorString = e.getMessage();
+        } finally {
+            if (errorString != null) {
+                jsonResponse.addProperty("error", Responses.FAILED_TO_CREATE_CONSULTATION + " : " + errorString);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(jsonResponse.toString());
+    }
+
+    @DeleteMapping(value = "/{consultationID}")
+    public ResponseEntity deleteConsultationByID(@PathVariable(value = "consultationID") Integer consultationID) {
+        String errorString = null;
+        JsonObject jsonResponse = new JsonObject();
+        try {
+            Consultation consultation = consultationService.getConsultationByID(consultationID);
+            if (consultation == null) {
+                errorString = Responses.FAILED_TO_DELETE_CONSULTATION + " : " + Responses.CONSULTATION_NOT_FOUND;
+            } else {
+                consultationService.deleteConsultationByID(consultationID);
+                jsonResponse.addProperty("response", Responses.SUCCESSFULLY_DELETED_CONSULTATION);
+            }
+        } catch (Exception e) {
+            errorString = Responses.FAILED_TO_DELETE_CONSULTATION + " : " + e.getMessage();
+        } finally {
+            if (errorString != null) {
+                jsonResponse.addProperty("error", errorString);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(jsonResponse.toString());
+    }
+
+
 }

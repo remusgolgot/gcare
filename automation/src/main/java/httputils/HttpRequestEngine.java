@@ -1,6 +1,7 @@
 package httputils;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -96,6 +97,18 @@ public class HttpRequestEngine {
             return e.getMessage();
         } finally {
             after(getMethod);
+        }
+    }
+
+    public String sendHttpDelete(String url) throws IOException {
+        HttpDelete deleteMethod = new HttpDelete(url);
+        try {
+            response = httpClient.execute(deleteMethod);
+            return EntityUtils.toString(response.getEntity(), "UTF-8");
+        } catch (HttpHostConnectException e) {
+            return e.getMessage();
+        } finally {
+            after(deleteMethod);
         }
     }
 

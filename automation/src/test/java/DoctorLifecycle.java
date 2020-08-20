@@ -1,6 +1,8 @@
-import com.gcare.model.Doctor;
+
+import com.gcare.model.DoctorDto;
 import com.gcare.model.Gender;
 import com.gcare.model.Specialty;
+
 import com.google.gson.*;
 import httputils.HttpRequestEngine;
 import org.apache.http.HttpResponse;
@@ -18,9 +20,9 @@ public class DoctorLifecycle {
     private static final String dateFormat = "yyyy-MM-dd";
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(dateFormat);
 
-    private static Doctor createDoctorEntity() throws Exception {
+    private static DoctorDto createDoctorEntity() throws Exception {
 
-        Doctor doctor = new Doctor();
+        DoctorDto doctor = new DoctorDto();
         doctor.setAddressCity("New York");
         doctor.setAddressCounty("NY");
         doctor.setAddressCountry("USA");
@@ -37,7 +39,7 @@ public class DoctorLifecycle {
     @Test
     public void createDoctorAndGetInfo() throws Exception {
 
-        Doctor doctorToCreate = createDoctorEntity();
+        DoctorDto doctorToCreate = createDoctorEntity();
         Gson gson = new GsonBuilder().setDateFormat(dateFormat).create();
 
         String body = gson.toJson(doctorToCreate);
@@ -49,9 +51,10 @@ public class DoctorLifecycle {
         JsonElement doctors = jsonObject.get("doctors");
         JsonArray array = doctors.getAsJsonArray();
         Assert.assertEquals(1, array.size());
-        Doctor doctorAfterGet = gson.fromJson(array.get(0), Doctor.class);
+        DoctorDto doctorAfterGet = gson.fromJson(array.get(0), DoctorDto.class);
         Assert.assertEquals(doctorAfterGet, doctorToCreate);
-        //TODO: add delete call to cleanup
+
+        engine.sendHttpDelete("http://localhost:8080/doctors/" + doctorAfterGet.getId());
     }
 
 }

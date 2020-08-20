@@ -20,4 +20,11 @@ public class DoctorDAO extends GenericDAO {
     public List<Doctor> list() {
        return list(Doctor.class);
     }
+
+    @Transactional
+    public Doctor getByID(int id) {
+        return (Doctor) em.createQuery(
+                "SELECT c FROM Doctor c WHERE c.id = " + id)
+                .getResultList().stream().findFirst().orElse(null);
+    }
 }

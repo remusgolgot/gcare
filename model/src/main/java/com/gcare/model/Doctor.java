@@ -2,6 +2,7 @@ package com.gcare.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -9,16 +10,14 @@ import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.Objects;
 
+
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode
 @ToString(callSuper = true)
 @Entity
 @Table(name = "DOCTOR")
-public class Doctor {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Doctor extends BaseEntity {
 
     @Column(name = "UUID", nullable = false, length = 16)
     @NotNull
@@ -76,7 +75,7 @@ public class Doctor {
     @Override
     public String toString() {
         return "{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", uuid='" + uuid + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", gender=" + gender +
