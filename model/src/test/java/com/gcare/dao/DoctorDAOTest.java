@@ -73,21 +73,21 @@ public class DoctorDAOTest {
     @Test(expected = ConstraintViolationException.class)
     public void createDoctorMissingAddressCity() {
         Doctor doctor = createDoctorEntity();
-        doctor.setAddressCity(null);
+        doctor.setCity(null);
         genericDAO.insert(doctor);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void createDoctorMissingAddressCounty() {
         Doctor doctor = createDoctorEntity();
-        doctor.setAddressCounty(null);
+        doctor.setCounty(null);
         genericDAO.insert(doctor);
     }
 
     @Test(expected = ConstraintViolationException.class)
     public void createDoctorMissingAddressCountry() {
         Doctor doctor = createDoctorEntity();
-        doctor.setAddressCountry(null);
+        doctor.setCountryCode(null);
         genericDAO.insert(doctor);
     }
 

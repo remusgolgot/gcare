@@ -31,7 +31,7 @@ public class Doctor extends BaseEntity {
     private Date dateOfBirth;
 
     @Column(name = "GENDER", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @NotNull
 //    @ValidateEnum(enumClazz = Gender.class) TODO://add enum validation
     private Gender gender;
@@ -47,17 +47,21 @@ public class Doctor extends BaseEntity {
     @Column(name = "MIDDLE_NAME")
     private String middleName;
 
-    @Column(name = "ADDRESS_CITY", nullable = false)
+    @Column(name = "ADDRESS", nullable = false)
     @NotNull
-    private String addressCity;
+    private String address;
 
-    @Column(name = "ADDRESS_COUNTY", nullable = false)
+    @Column(name = "CITY", nullable = false)
     @NotNull
-    private String addressCounty;
+    private String city;
 
-    @Column(name = "ADDRESS_COUNTRY", nullable = false)
+    @Column(name = "COUNTY", nullable = false)
     @NotNull
-    private String addressCountry;
+    private String county;
+
+    @Column(name = "COUNTRY_CODE", nullable = false)
+    @NotNull
+    private String countryCode;
 
     @Column(name = "HOURLY_RATE", nullable = false)
     @NotNull
@@ -82,9 +86,10 @@ public class Doctor extends BaseEntity {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", middleName='" + middleName + '\'' +
-                ", addressCity='" + addressCity + '\'' +
-                ", addressCounty='" + addressCounty + '\'' +
-                ", addressCountry='" + addressCountry + '\'' +
+                ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", county='" + county + '\'' +
+                ", countryCode='" + countryCode + '\'' +
                 ", hourlyRate=" + hourlyRate +
                 ", description='" + description + '\'' +
                 ", primarySpecialty=" + primarySpecialty +
@@ -102,9 +107,10 @@ public class Doctor extends BaseEntity {
                 Objects.equals(firstName, doctor.firstName) &&
                 Objects.equals(lastName, doctor.lastName) &&
                 Objects.equals(middleName, doctor.middleName) &&
-                Objects.equals(addressCity, doctor.addressCity) &&
-                Objects.equals(addressCounty, doctor.addressCounty) &&
-                Objects.equals(addressCountry, doctor.addressCountry) &&
+                Objects.equals(address, doctor.address) &&
+                Objects.equals(city, doctor.city) &&
+                Objects.equals(county, doctor.county) &&
+                Objects.equals(countryCode, doctor.countryCode) &&
                 Objects.equals(hourlyRate, doctor.hourlyRate) &&
                 Objects.equals(description, doctor.description) &&
                 primarySpecialty == doctor.primarySpecialty;
@@ -112,6 +118,6 @@ public class Doctor extends BaseEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, dateOfBirth, gender, firstName, lastName, middleName, addressCity, addressCounty, addressCountry, hourlyRate, description, primarySpecialty);
+        return Objects.hash(uuid, dateOfBirth, gender, firstName, lastName, middleName, address, city, county, countryCode, hourlyRate, description, primarySpecialty);
     }
 }

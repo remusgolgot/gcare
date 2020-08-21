@@ -23,9 +23,10 @@ public class DoctorLifecycle {
     private static DoctorDto createDoctorEntity() throws Exception {
 
         DoctorDto doctor = new DoctorDto();
-        doctor.setAddressCity("New York");
-        doctor.setAddressCounty("NY");
-        doctor.setAddressCountry("USA");
+        doctor.setAddress("5th Avenue, nr. 65");
+        doctor.setCity("New York");
+        doctor.setCounty("NY");
+        doctor.setCountryCode("US");
         doctor.setFirstName("Dan");
         doctor.setLastName("Ives");
         doctor.setGender(Gender.F);

@@ -1,8 +1,6 @@
 package com.gcare.dao;
 
 import com.gcare.config.TestConfig;
-import com.gcare.dao.GenericDAO;
-import com.gcare.model.Gender;
 import com.gcare.model.Patient;
 import org.junit.After;
 import org.junit.Assert;
@@ -14,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
-import java.sql.Timestamp;
 import java.util.List;
 
 import static com.gcare.dao.EntityUtils.createPatientEntity;
@@ -82,7 +79,7 @@ public class PatientDAOTest {
     @Test(expected = PersistenceException.class)
     public void createPatientMissingAddressCity() {
         Patient patient = createPatientEntity();
-        patient.setAddressCity(null);
+        patient.setCity(null);
         genericDAO.insert(patient);
     }
 

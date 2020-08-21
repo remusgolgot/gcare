@@ -17,9 +17,10 @@ public class DoctorDto extends BaseDto {
     private String firstName;
     private String lastName;
     private String middleName;
-    private String addressCity;
-    private String addressCounty;
-    private String addressCountry;
+    private String address;
+    private String city;
+    private String county;
+    private String countryCode;
     private Integer hourlyRate;
     private String description;
     private Specialty primarySpecialty;

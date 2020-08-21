@@ -39,14 +39,21 @@ public class Patient extends BaseEntity {
     @Column(name = "MIDDLE_NAME")
     private String middleName;
 
-    @Column(name = "ADDRESS_CITY", nullable = false)
-    private String addressCity;
+    @Column(name = "ADDRESS", nullable = false)
+    @NotNull
+    private String address;
 
-    @Column(name = "ADDRESS_COUNTY", nullable = false)
-    private String addressCounty;
+    @Column(name = "CITY", nullable = false)
+    @NotNull
+    private String city;
 
-    @Column(name = "ADDRESS_COUNTRY", nullable = false)
-    private String addressCountry;
+    @Column(name = "COUNTY", nullable = false)
+    @NotNull
+    private String county;
+
+    @Column(name = "COUNTRY_CODE", nullable = false)
+    @NotNull
+    private String countryCode;
 
     @Column(name = "UUID", nullable = false, length = 16)
     @NotNull
