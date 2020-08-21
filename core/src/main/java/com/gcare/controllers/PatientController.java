@@ -66,7 +66,7 @@ public class PatientController {
             errorString = e.getMessage();
         } finally {
             if (errorString != null) {
-                jsonResponse.addProperty("error", Responses.FAILED_TO_CREATE_PATIENT + " " + errorString);
+                jsonResponse.addProperty("error", Responses.FAILED_TO_CREATE_PATIENT + " : " + errorString);
             }
         }
         return ResponseEntity.status(HttpStatus.OK).body(jsonResponse.toString());

@@ -3,9 +3,11 @@ import com.gcare.model.DoctorDto;
 import com.gcare.model.Gender;
 import com.gcare.model.Specialty;
 
+import com.gcare.utils.GsonUtils;
 import com.google.gson.*;
 import httputils.HttpRequestEngine;
 import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,9 +43,8 @@ public class DoctorLifecycle {
     public void createDoctorAndGetInfo() throws Exception {
 
         DoctorDto doctorToCreate = createDoctorEntity();
-        Gson gson = new GsonBuilder().setDateFormat(dateFormat).create();
 
-        String body = gson.toJson(doctorToCreate);
+        String body = GsonUtils.gson.toJson(doctorToCreate);
         HttpResponse postResponse = engine.sendHttpPost("http://localhost:8080/doctors", body);
         Assert.assertEquals(200, engine.getResponseCode(postResponse));
 
@@ -52,10 +53,25 @@ public class DoctorLifecycle {
         JsonElement doctors = jsonObject.get("doctors");
         JsonArray array = doctors.getAsJsonArray();
         Assert.assertEquals(1, array.size());
-        DoctorDto doctorAfterGet = gson.fromJson(array.get(0), DoctorDto.class);
+        DoctorDto doctorAfterGet = GsonUtils.gson.fromJson(array.get(0), DoctorDto.class);
         Assert.assertEquals(doctorAfterGet, doctorToCreate);
 
         engine.sendHttpDelete("http://localhost:8080/doctors/" + doctorAfterGet.getId());
+    }
+
+    @Test
+    public void createDoctorWithValidationErrors() throws Exception {
+        DoctorDto doctorToCreate = createDoctorEntity();
+        doctorToCreate.setCountryCode("CCC");
+        doctorToCreate.setHourlyRate(0);
+
+        String body = GsonUtils.gson.toJson(doctorToCreate);
+        HttpResponse postResponse = engine.sendHttpPost("http://localhost:8080/doctors", body);
+        Assert.assertEquals(200, engine.getResponseCode(postResponse));
+        Assert.assertEquals(
+                "{\"error\":\"Could not create doctor : Validation Errors : [hourlyRate : must be greater than 0, countryCode : size must be between 2 and 2]\"}",
+                 EntityUtils.toString(postResponse.getEntity(), "UTF-8")
+        );
     }
 
 }

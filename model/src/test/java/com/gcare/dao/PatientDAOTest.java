@@ -76,7 +76,7 @@ public class PatientDAOTest {
         genericDAO.insert(patient);
     }
 
-    @Test(expected = PersistenceException.class)
+    @Test(expected = ConstraintViolationException.class)
     public void createPatientMissingAddressCity() {
         Patient patient = createPatientEntity();
         patient.setCity(null);

@@ -148,5 +148,40 @@ public class DoctorDAOTest {
         genericDAO.insert(doctor);
     }
 
+    @Test
+    public void createDoctorCountryCodeTooShort() {
+        try {
+            Doctor doctor = createDoctorEntity();
+            doctor.setCountryCode("C");
+            genericDAO.insert(doctor);
+        } catch (ConstraintViolationException e) {
+            Assert.assertEquals(1, e.getConstraintViolations().size());
+        }
+    }
+
+    @Test
+    public void createDoctorCountryCodeTooLong() {
+        try {
+            Doctor doctor = createDoctorEntity();
+            doctor.setCountryCode("CCC");
+            genericDAO.insert(doctor);
+        } catch (ConstraintViolationException e) {
+            Assert.assertEquals(1, e.getConstraintViolations().size());
+        }
+    }
+
+    @Test
+    public void createDoctorMultipleConstrainViolations() {
+        try {
+            Doctor doctor = createDoctorEntity();
+            doctor.setCountryCode("CCC");
+            doctor.setHourlyRate(0);
+            genericDAO.insert(doctor);
+        } catch (ConstraintViolationException e) {
+            Assert.assertEquals(2, e.getConstraintViolations().size());
+        }
+    }
+
+
 
 }

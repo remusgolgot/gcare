@@ -60,7 +60,8 @@ public class Doctor extends BaseEntity {
     private String county;
 
     @Column(name = "COUNTRY_CODE", nullable = false)
-    @NotNull
+    @NotNull(message="countryCode is a required field")
+    @Size(min = 2, max = 2)
     private String countryCode;
 
     @Column(name = "HOURLY_RATE", nullable = false)

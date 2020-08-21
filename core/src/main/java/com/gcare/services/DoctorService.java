@@ -5,9 +5,11 @@ import com.gcare.model.Consultation;
 import com.gcare.model.Doctor;
 import com.gcare.model.DoctorDto;
 import com.gcare.utils.ClassUtils;
+import com.gcare.utils.ConstraintViolationsErrorBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +34,11 @@ public class DoctorService {
 
     public Doctor addDoctor(DoctorDto doctorDto) throws Exception {
         Doctor entity = (Doctor) ClassUtils.copyPropertiesFromDTO(Doctor.class, doctorDto);
-        return doctorDAO.insert(entity);
+        try {
+            return doctorDAO.insert(entity);
+        } catch (ConstraintViolationException e) {
+            throw new Exception(ConstraintViolationsErrorBuilder.buildErrorMessageFromException(e));
+        }
     }
 
     public void deleteDoctor(Integer doctorID) {
