@@ -54,13 +54,11 @@ public class DoctorService {
 
     public Doctor updateDoctor(DoctorDto doctorDto) throws Exception {
         Doctor entity = (Doctor) ClassUtils.copyPropertiesFromDTO(Doctor.class, doctorDto);
-        System.out.println(entity.toString());
         try {
             return doctorDAO.update(entity);
         } catch (ConstraintViolationException e) {
             throw new Exception(ConstraintViolationsErrorBuilder.buildErrorMessageFromException(e));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             throw e;
         }
     }

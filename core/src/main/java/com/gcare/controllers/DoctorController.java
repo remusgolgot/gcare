@@ -92,9 +92,7 @@ public class DoctorController {
         try {
             doctorToUpdate = doctorService.getDoctorById(doctorID);
             if (doctorToUpdate != null) {
-                System.out.println("here");
                 doctorDto.setId(doctorToUpdate.getId());
-                System.out.println(doctorDto.toString());
                 doctorService.updateDoctor(doctorDto);
                 jsonResponse.addProperty("response", Responses.SUCCESSFULLY_UPDATED_DOCTOR);
             } else {

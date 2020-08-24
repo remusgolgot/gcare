@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -53,6 +54,7 @@ public class Patient extends BaseEntity {
 
     @Column(name = "COUNTRY_CODE", nullable = false)
     @NotNull
+    @Size(min = 2, max = 2)
     private String countryCode;
 
     @Column(name = "UUID", nullable = false, length = 16)

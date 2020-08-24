@@ -72,6 +72,32 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.OK).body(jsonResponse.toString());
     }
 
+    @PutMapping(value = "/{patientID}", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity updatePatient(@PathVariable(value = "patientID") Integer patientID,
+                                        @Valid @RequestBody PatientDto patientDto) {
+        String errorString = null;
+        Patient patientToUpdate;
+        JsonObject jsonResponse = new JsonObject();
+        try {
+            patientToUpdate = patientService.getPatientByID(patientID);
+            if (patientToUpdate != null) {
+                patientDto.setId(patientToUpdate.getId());
+                patientService.updatePatient(patientDto);
+                jsonResponse.addProperty("response", Responses.SUCCESSFULLY_UPDATED_DOCTOR);
+            } else {
+                errorString = Responses.DOCTOR_NOT_FOUND_FOR_ID;
+            }
+        } catch (Exception e) {
+            errorString = e.getMessage();
+        } finally {
+            if (errorString != null) {
+                jsonResponse.addProperty("error", Responses.FAILED_TO_UPDATE_DOCTOR + " : " + errorString);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(jsonResponse.toString());
+    }
+
     @DeleteMapping(value = "/{patientID}")
     public ResponseEntity deletePatientByID(@PathVariable(value = "patientID") Integer patientID) {
         String errorString = null;

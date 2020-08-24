@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.PersistenceException;
 import javax.validation.ConstraintViolationException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import static com.gcare.dao.EntityUtils.createPatientEntity;
@@ -83,6 +84,27 @@ public class PatientDAOTest {
         genericDAO.insert(patient);
     }
 
+    @Test
+    public void updatePatientTest() {
+        Patient patient = createPatientEntity();
+        Assert.assertNull(patient.getId());
+        genericDAO.insert(patient);
+        Assert.assertNotNull(patient.getId());
+        List<Patient> patientAfterInsertList = genericDAO.get(Patient.class);
+        Assert.assertEquals(1, patientAfterInsertList.size());
+        Assert.assertEquals(patient.getCity(), patientAfterInsertList.get(0).getCity());
+        Timestamp creationTimestamp = patientAfterInsertList.get(0).getLastUpdateTimestamp();
+
+        String newCity = "Linz";
+        patient.setCity(newCity);
+        genericDAO.update(patient);
+        List<Patient> patientAfterUpdateList = genericDAO.get(Patient.class);
+        Assert.assertEquals(1, patientAfterUpdateList.size());
+        Assert.assertEquals(newCity, patientAfterUpdateList.get(0).getCity());
+        Timestamp updateTimestamp = patientAfterUpdateList.get(0).getLastUpdateTimestamp();
+
+        Assert.assertTrue(creationTimestamp.getTime() < updateTimestamp.getTime());
+    }
 
 
 }
