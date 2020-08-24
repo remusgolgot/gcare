@@ -40,7 +40,7 @@ public class DoctorLifecycle {
     }
 
     @Test
-    public void createDoctorAndGetInfo() throws Exception {
+    public void doctorCreateUpdateAndGetInfo() throws Exception {
 
         DoctorDto doctorToCreate = createDoctorEntity();
 
@@ -56,6 +56,22 @@ public class DoctorLifecycle {
         DoctorDto doctorAfterGet = GsonUtils.gson.fromJson(array.get(0), DoctorDto.class);
         Assert.assertEquals(doctorAfterGet, doctorToCreate);
 
+        DoctorDto doctorToUpdate = createDoctorEntity();
+        doctorToUpdate.setCountryCode("RO");
+        doctorToUpdate.setHourlyRate(13);
+
+        String putBody = GsonUtils.gson.toJson(doctorToUpdate);
+        HttpResponse putResponse = engine.sendHttpPut("http://localhost:8080/doctors/" + doctorAfterGet.getId(), putBody);
+        Assert.assertEquals(200, engine.getResponseCode(putResponse));
+        response = engine.sendHttpGet("http://localhost:8080/doctors");
+        jsonObject = new JsonParser().parse(response).getAsJsonObject();
+        doctors = jsonObject.get("doctors");
+        array = doctors.getAsJsonArray();
+        Assert.assertEquals(1, array.size());
+        DoctorDto doctorAfterUpdateAndGet = GsonUtils.gson.fromJson(array.get(0), DoctorDto.class);
+        Assert.assertEquals(doctorAfterUpdateAndGet, doctorToUpdate);
+        Assert.assertNotEquals(doctorAfterUpdateAndGet, doctorToCreate);
+
         engine.sendHttpDelete("http://localhost:8080/doctors/" + doctorAfterGet.getId());
     }
 
@@ -68,9 +84,12 @@ public class DoctorLifecycle {
         String body = GsonUtils.gson.toJson(doctorToCreate);
         HttpResponse postResponse = engine.sendHttpPost("http://localhost:8080/doctors", body);
         Assert.assertEquals(200, engine.getResponseCode(postResponse));
-        Assert.assertEquals(
-                "{\"error\":\"Could not create doctor : Validation Errors : [hourlyRate : must be greater than 0, countryCode : size must be between 2 and 2]\"}",
-                 EntityUtils.toString(postResponse.getEntity(), "UTF-8")
+        String entityAsString = EntityUtils.toString(postResponse.getEntity(), "UTF-8");
+        Assert.assertTrue(
+                entityAsString.contains("hourlyRate : must be greater than 0")
+        );
+        Assert.assertTrue(
+                entityAsString.contains("size must be between 2 and 2")
         );
     }
 

@@ -12,6 +12,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import java.sql.Timestamp;
 import java.util.List;
 
 import static com.gcare.dao.EntityUtils.createDoctorEntity;
@@ -182,6 +185,27 @@ public class DoctorDAOTest {
         }
     }
 
+    @Test
+    public void updateDoctorTest() {
+        Doctor doctor = createDoctorEntity();
+        Assert.assertNull(doctor.getId());
+        genericDAO.insert(doctor);
+        Assert.assertNotNull(doctor.getId());
+        List<Doctor> doctorAfterInsertList = genericDAO.get(Doctor.class);
+        Assert.assertEquals(1, doctorAfterInsertList.size());
+        Assert.assertEquals(doctor.getHourlyRate(), doctorAfterInsertList.get(0).getHourlyRate());
+        Timestamp creationTimestamp = doctorAfterInsertList.get(0).getLastUpdateTimestamp();
+
+        int newHourlyRate = doctor.getHourlyRate() + 1;
+        doctor.setHourlyRate(newHourlyRate);
+        genericDAO.update(doctor);
+        List<Doctor> doctorAfterUpdateList = genericDAO.get(Doctor.class);
+        Assert.assertEquals(1, doctorAfterUpdateList.size());
+        Assert.assertEquals(newHourlyRate, (int) doctorAfterUpdateList.get(0).getHourlyRate());
+        Timestamp updateTimestamp = doctorAfterUpdateList.get(0).getLastUpdateTimestamp();
+
+        Assert.assertTrue(creationTimestamp.getTime() < updateTimestamp.getTime());
+    }
 
 
 }

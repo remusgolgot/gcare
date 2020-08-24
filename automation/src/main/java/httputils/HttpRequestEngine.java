@@ -1,10 +1,7 @@
 package httputils;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.*;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.HttpHostConnectException;
@@ -69,6 +66,22 @@ public class HttpRequestEngine {
             response = httpClient.execute(postMethod);
         } finally {
             after(postMethod);
+        }
+    }
+
+    public HttpResponse sendHttpPut(String url, String body) throws IOException {
+        HttpPut putMethod = new HttpPut(url);
+
+        try {
+            StringEntity entity;
+            entity = new StringEntity(body, "UTF-8");
+            entity.setContentEncoding("UTF-8");
+            entity.setContentType("application/json");
+            putMethod.setEntity(entity);
+            response = httpClient.execute(putMethod);
+            return response;
+        } finally {
+            after(putMethod);
         }
     }
 
