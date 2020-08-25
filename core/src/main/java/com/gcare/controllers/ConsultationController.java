@@ -57,6 +57,32 @@ public class ConsultationController {
         return ResponseEntity.status(HttpStatus.OK).body(jsonResponse.toString());
     }
 
+    @PutMapping(value = "/{consultationID}", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity updateConsultation(@PathVariable(value = "consultationID") Integer consultationID,
+                                       @Valid @RequestBody ConsultationDto consultationDto) {
+        String errorString = null;
+        Consultation consultationToUpdate;
+        JsonObject jsonResponse = new JsonObject();
+        try {
+            consultationToUpdate = consultationService.getConsultationByID(consultationID);
+            if (consultationToUpdate != null) {
+                consultationDto.setId(consultationToUpdate.getId());
+                consultationService.updateConsultation(consultationDto);
+                jsonResponse.addProperty("response", Responses.SUCCESSFULLY_UPDATED_CONSULTATION);
+            } else {
+                errorString = Responses.CONSULTATION_NOT_FOUND;
+            }
+        } catch (Exception e) {
+            errorString = e.getMessage();
+        } finally {
+            if (errorString != null) {
+                jsonResponse.addProperty("error", Responses.FAILED_TO_UPDATE_CONSULTATION + " : " + errorString);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(jsonResponse.toString());
+    }
+
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseBody
     public ResponseEntity createConsultation(@Valid @RequestBody ConsultationDto consultationDTO) {

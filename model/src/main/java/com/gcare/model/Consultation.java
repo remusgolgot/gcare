@@ -36,12 +36,10 @@ public class Consultation extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "PATIENT_ID", referencedColumnName = "id")
-    @NotNull
     private Patient patient;
 
     @OneToOne
     @JoinColumn(name = "DOCTOR_ID", referencedColumnName = "id")
-    @NotNull
     private Doctor doctor;
 
 }

@@ -1,9 +1,6 @@
 package com.gcare.dao;
 
-import com.gcare.model.Doctor;
-import com.gcare.model.Gender;
-import com.gcare.model.Patient;
-import com.gcare.model.Specialty;
+import com.gcare.model.*;
 import lombok.SneakyThrows;
 
 
@@ -42,5 +39,18 @@ public class EntityUtils {
         doctor.setDateOfBirth(DATE_FORMAT.parse("2019-01-01"));
         doctor.setUuid("44878745a7c5bbbf");
         return doctor;
+    }
+
+    @SneakyThrows
+    static Consultation createConsultationEntity() {
+
+        Consultation consultation = new Consultation();
+        consultation.setDate(DATE_FORMAT.parse("2020-12-12"));
+        consultation.setConsultationType(ConsultationType.IN_PERSON);
+        consultation.setConsultationState(ConsultationState.COMPLETED);
+        consultation.setNotes("lll");
+//        consultation.setDoctor(createDoctorEntity());
+//        consultation.setPatient(createPatientEntity());
+        return consultation;
     }
 }

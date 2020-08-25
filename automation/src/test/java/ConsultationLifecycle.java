@@ -57,7 +57,7 @@ public class ConsultationLifecycle {
     }
 
     @Test
-    public void createConsultation() throws Exception {
+    public void createAndUpdateConsultation() throws Exception {
 
         DoctorDto doctorToCreate = createDoctorEntity();
 
@@ -105,6 +105,24 @@ public class ConsultationLifecycle {
         Assert.assertEquals(consultationToCreate.getDate(), consultationAfterGet.getDate());
         Assert.assertEquals(consultationAfterGet.getDoctor().getId(), doctorAfterGet.getId());
         Assert.assertEquals(consultationAfterGet.getPatient().getId(), patientAfterGet.getId());
+
+        ConsultationDto consultationToUpdate = createConsultationEntity();
+        consultationToUpdate.setConsultationState(ConsultationState.COMPLETED);
+        consultationToUpdate.setNotes("He gone");
+        consultationToUpdate.setDoctorID(doctorAfterGet.getId());
+        consultationToUpdate.setPatientID(patientAfterGet.getId());
+
+        String putBody = GsonUtils.gson.toJson(consultationToUpdate);
+        HttpResponse putResponse = engine.sendHttpPut("http://localhost:8080/consultations/" + consultationAfterGet.getId(), putBody);
+        Assert.assertEquals(200, engine.getResponseCode(putResponse));
+        response = engine.sendHttpGet("http://localhost:8080/consultations");
+        jsonObject = new JsonParser().parse(response).getAsJsonObject();
+        consultations = jsonObject.get("consultations");
+        array = consultations.getAsJsonArray();
+        Assert.assertEquals(1, array.size());
+        ConsultationDto consultationAfterUpdateAndGet = GsonUtils.gson.fromJson(array.get(0), ConsultationDto.class);
+        Assert.assertEquals(consultationAfterUpdateAndGet, consultationToUpdate);
+        Assert.assertNotEquals(consultationAfterUpdateAndGet, consultationToCreate);
 
         engine.sendHttpDelete("http://localhost:8080/consultations/" + consultationAfterGet.getId());
         engine.sendHttpDelete("http://localhost:8080/doctors/" + doctorAfterGet.getId());
