@@ -12,11 +12,7 @@ import java.sql.Date;
 @ToString(callSuper = true)
 @Entity
 @Table(name = "SAMPLE")
-public class Sample {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Sample extends BaseEntity {
 
     @Column(name = "COLLECTED_DATE", nullable = false)
     private Date collectedDate;

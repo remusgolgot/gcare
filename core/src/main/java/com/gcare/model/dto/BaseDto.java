@@ -1,4 +1,4 @@
-package com.gcare.model;
+package com.gcare.model.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

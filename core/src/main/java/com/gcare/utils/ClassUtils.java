@@ -1,6 +1,6 @@
 package com.gcare.utils;
 
-import com.gcare.model.BaseDto;
+import com.gcare.model.dto.BaseDto;
 import com.gcare.model.BaseEntity;
 import org.springframework.beans.BeanUtils;
 

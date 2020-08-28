@@ -1,11 +1,8 @@
 package com.gcare.controllers;
 
 import com.gcare.messages.Responses;
-import com.gcare.model.Consultation;
-import com.gcare.model.Doctor;
 import com.gcare.model.Patient;
-import com.gcare.model.PatientDto;
-import com.gcare.services.DoctorService;
+import com.gcare.model.dto.PatientDto;
 import com.gcare.services.PatientService;
 import com.gcare.utils.GsonUtils;
 import com.google.gson.JsonArray;

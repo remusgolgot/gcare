@@ -1,5 +1,5 @@
 
-import com.gcare.model.DoctorDto;
+import com.gcare.model.dto.DoctorDto;
 import com.gcare.model.Gender;
 import com.gcare.model.Specialty;
 

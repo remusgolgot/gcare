@@ -57,6 +57,7 @@ public class ConsultationDAOTest {
         Assert.assertEquals(1, consultationAfterInsertList.size());
         Assert.assertEquals(consultation.getNotes(), consultationAfterInsertList.get(0).getNotes());
         Assert.assertEquals(consultation.getConsultationState(), consultationAfterInsertList.get(0).getConsultationState());
+        Assert.assertNotNull(consultation.getLastUpdateTimestamp());
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -97,7 +98,7 @@ public class ConsultationDAOTest {
         Assert.assertEquals(consultation.getNotes(), consultationsAfterInsertList.get(0).getNotes());
         Timestamp creationTimestamp = consultationsAfterInsertList.get(0).getLastUpdateTimestamp();
 
-        String newNotes = consultation.getNotes() + " etc.";
+        String newNotes = consultation.getNotes() + " etc. ";
         consultation.setNotes(newNotes);
         genericDAO.update(consultation);
         List<Consultation> consultationAfterUpdateList = genericDAO.get(Consultation.class);
@@ -106,6 +107,7 @@ public class ConsultationDAOTest {
         Timestamp updateTimestamp = consultationAfterUpdateList.get(0).getLastUpdateTimestamp();
 
         Assert.assertTrue(creationTimestamp.getTime() < updateTimestamp.getTime());
+        Assert.assertTrue(consultation.getNotes().contains(" etc. "));
     }
 
 

@@ -1,4 +1,5 @@
 import com.gcare.model.*;
+import com.gcare.model.dto.PatientDto;
 import com.gcare.utils.GsonUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

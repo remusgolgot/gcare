@@ -34,11 +34,11 @@ public class Consultation extends BaseEntity {
     @Future
     private Date date;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "PATIENT_ID", referencedColumnName = "id")
     private Patient patient;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "DOCTOR_ID", referencedColumnName = "id")
     private Doctor doctor;
 

@@ -2,7 +2,7 @@ package com.gcare.services;
 
 import com.gcare.dao.ConsultationDAO;
 import com.gcare.model.Consultation;
-import com.gcare.model.ConsultationDto;
+import com.gcare.model.dto.ConsultationDto;
 import com.gcare.model.ConsultationState;
 import com.gcare.utils.ClassUtils;
 import com.gcare.utils.ConstraintViolationsErrorBuilder;

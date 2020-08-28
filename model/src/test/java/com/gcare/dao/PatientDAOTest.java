@@ -40,6 +40,7 @@ public class PatientDAOTest {
         List<Patient> patientAfterInsert = genericDAO.get(Patient.class);
         Assert.assertEquals(1, patientAfterInsert.size());
         Assert.assertEquals(patient.getFirstName(), patientAfterInsert.get(0).getFirstName());
+        Assert.assertNotNull(patient.getLastUpdateTimestamp());
     }
 
     @Test(expected = PersistenceException.class)

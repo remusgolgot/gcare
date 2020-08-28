@@ -43,6 +43,7 @@ public class DoctorDAOTest {
         List<Doctor> doctorAfterInsertList = genericDAO.get(Doctor.class);
         Assert.assertEquals(1, doctorAfterInsertList.size());
         Assert.assertEquals(doctor.getFirstName(), doctorAfterInsertList.get(0).getFirstName());
+        Assert.assertNotNull(doctor.getLastUpdateTimestamp());
     }
 
     @Test(expected = ConstraintViolationException.class)

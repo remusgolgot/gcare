@@ -1,5 +1,7 @@
-package com.gcare.model;
+package com.gcare.model.dto;
 
+import com.gcare.model.ConsultationState;
+import com.gcare.model.ConsultationType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

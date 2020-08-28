@@ -3,7 +3,7 @@ package com.gcare.controllers;
 import com.gcare.messages.Responses;
 import com.gcare.model.Consultation;
 import com.gcare.model.Doctor;
-import com.gcare.model.DoctorDto;
+import com.gcare.model.dto.DoctorDto;
 import com.gcare.services.DoctorService;
 import com.gcare.utils.GsonUtils;
 import com.google.gson.*;

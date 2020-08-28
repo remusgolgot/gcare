@@ -1,4 +1,7 @@
 import com.gcare.model.*;
+import com.gcare.model.dto.ConsultationDto;
+import com.gcare.model.dto.DoctorDto;
+import com.gcare.model.dto.PatientDto;
 import com.gcare.utils.GsonUtils;
 import com.google.gson.*;
 import httputils.HttpRequestEngine;

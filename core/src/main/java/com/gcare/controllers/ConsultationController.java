@@ -2,7 +2,7 @@ package com.gcare.controllers;
 
 import com.gcare.messages.Responses;
 import com.gcare.model.Consultation;
-import com.gcare.model.ConsultationDto;
+import com.gcare.model.dto.ConsultationDto;
 import com.gcare.model.Doctor;
 import com.gcare.model.Patient;
 import com.gcare.services.ConsultationService;

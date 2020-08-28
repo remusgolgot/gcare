@@ -3,7 +3,7 @@ package com.gcare.services;
 import com.gcare.dao.DoctorDAO;
 import com.gcare.model.Consultation;
 import com.gcare.model.Doctor;
-import com.gcare.model.DoctorDto;
+import com.gcare.model.dto.DoctorDto;
 import com.gcare.utils.ClassUtils;
 import com.gcare.utils.ConstraintViolationsErrorBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
