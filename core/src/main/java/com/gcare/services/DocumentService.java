@@ -30,18 +30,24 @@ public class DocumentService {
     public Document addDocument(DocumentDto documentDto) throws Exception {
         Document entity = (Document) ClassUtils.copyPropertiesFromDTO(Document.class, documentDto);
         try {
-            return documentDAO.insert(entity);
+            Document dto = documentDAO.getByPath(documentDto.getDocumentPath());
+            if (dto != null) {
+                entity.setId(dto.getId());
+                return documentDAO.merge(entity);
+            } else {
+                return documentDAO.insert(entity);
+            }
         } catch (ConstraintViolationException e) {
             throw new Exception(ConstraintViolationsErrorBuilder.buildErrorMessageFromException(e));
         }
     }
 
-    public void deleteDocument(Integer documentID) {
-        Document document = documentDAO.getByID(documentID);
-        if (document != null) {
-            documentDAO.delete(document);
-        }
-    }
+//    public void deleteDocument(String documentPath) {
+//        Document document = documentDAO.getByID(documentID);
+//        if (document != null) {
+//            documentDAO.delete(document);
+//        }
+//    }
 
     public Document getDocumentByID(Integer id) {
         return documentDAO.getByID(id);

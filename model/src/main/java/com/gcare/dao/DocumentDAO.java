@@ -21,4 +21,10 @@ public class DocumentDAO extends GenericDAO {
                 "SELECT c FROM Document c WHERE c.id = " + id)
                 .getResultList().stream().findFirst().orElse(null);
     }
+
+    public Document getByPath(String documentPath) {
+        return (Document) em.createQuery(
+                "SELECT c FROM Document c WHERE c.documentPath = '" + documentPath + "'")
+                .getResultList().stream().findFirst().orElse(null);
+    }
 }

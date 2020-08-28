@@ -20,6 +20,12 @@ public class GenericDAO {
     }
 
     @Transactional
+    public <E> E merge(E entity) {
+        em.merge(entity);
+        return entity;
+    }
+
+    @Transactional
     public <E> E update(E entity) {
         em.merge(entity);
         return entity;

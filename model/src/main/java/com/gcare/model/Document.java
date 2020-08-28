@@ -16,15 +16,16 @@ import java.util.Date;
 @Table(name = "DOCUMENT")
 public class Document extends BaseEntity {
 
-    private String type;
-
     @Column(name = "DATE_OF_COLLECTION", nullable = false)
     @Temporal(TemporalType.DATE)
     @NotNull
     @Past
-    private Date dateOfCollection;
+    private Date creationDate;
 
     @ManyToOne
     @JoinColumn(name = "PATIENT_ID", referencedColumnName = "id")
     private Patient patient;
+
+    @Column(name = "DOCUMENT_PATH")
+    private String documentPath;
 }

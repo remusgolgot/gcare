@@ -12,7 +12,13 @@ import java.util.Date;
 @ToString(callSuper = true)
 public class DocumentDto extends BaseDto {
 
-    private String type;
-    private Date dateOfCollection;
+    private Date creationDate;
     private Patient patient;
+    private String documentPath;
+
+    public DocumentDto(Date creationDate, Patient patient, String documentPath) {
+        this.creationDate = creationDate;
+        this.patient = patient;
+        this.documentPath = documentPath;
+    }
 }
