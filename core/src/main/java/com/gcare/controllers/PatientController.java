@@ -81,15 +81,15 @@ public class PatientController {
             if (patientToUpdate != null) {
                 patientDto.setId(patientToUpdate.getId());
                 patientService.updatePatient(patientDto);
-                jsonResponse.addProperty("response", Responses.SUCCESSFULLY_UPDATED_DOCTOR);
+                jsonResponse.addProperty("response", Responses.SUCCESSFULLY_UPDATED_PATIENT);
             } else {
-                errorString = Responses.DOCTOR_NOT_FOUND_FOR_ID;
+                errorString = Responses.PATIENT_NOT_FOUND_FOR_ID;
             }
         } catch (Exception e) {
             errorString = e.getMessage();
         } finally {
             if (errorString != null) {
-                jsonResponse.addProperty("error", Responses.FAILED_TO_UPDATE_DOCTOR + " : " + errorString);
+                jsonResponse.addProperty("error", Responses.FAILED_TO_UPDATE_PATIENT + " : " + errorString);
             }
         }
         return ResponseEntity.status(HttpStatus.OK).body(jsonResponse.toString());
