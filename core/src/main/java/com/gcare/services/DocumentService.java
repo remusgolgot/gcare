@@ -30,7 +30,7 @@ public class DocumentService {
     public Document addDocument(DocumentDto documentDto) throws Exception {
         Document entity = (Document) ClassUtils.copyPropertiesFromDTO(Document.class, documentDto);
         try {
-            Document dto = documentDAO.getByPath(documentDto.getDocumentPath());
+            Document dto = documentDAO.getByPatientAndName(documentDto.getPatient().getId(), documentDto.getDocumentName());
             if (dto != null) {
                 entity.setId(dto.getId());
                 return documentDAO.merge(entity);
@@ -62,5 +62,13 @@ public class DocumentService {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    public void deleteDocument(Document document) {
+       documentDAO.delete(document);
+    }
+
+    public Document getByPatientAndName(Integer patientId, String documentName) {
+        return documentDAO.getByPatientAndName(patientId, documentName);
     }
 }

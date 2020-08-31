@@ -77,5 +77,11 @@ public class FileStorageService {
             folderCC.toFile().mkdirs();
         }
     }
+
+    public void deleteDocument(String documentPath) throws Exception {
+        Path pathToDelete = this.fileStorageLocation.resolve(documentPath).normalize();
+        System.out.println(pathToDelete.toString());
+        Files.delete(pathToDelete);
+    }
 }
 

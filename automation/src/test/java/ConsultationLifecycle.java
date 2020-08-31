@@ -124,8 +124,8 @@ public class ConsultationLifecycle {
         array = consultations.getAsJsonArray();
         Assert.assertEquals(1, array.size());
         ConsultationDto consultationAfterUpdateAndGet = GsonUtils.gson.fromJson(array.get(0), ConsultationDto.class);
-        Assert.assertEquals(consultationAfterUpdateAndGet, consultationToUpdate);
-        Assert.assertNotEquals(consultationAfterUpdateAndGet, consultationToCreate);
+        Assert.assertEquals(consultationAfterUpdateAndGet.getConsultationState(), consultationToUpdate.getConsultationState());
+        Assert.assertNotEquals(consultationAfterUpdateAndGet.getConsultationState(), consultationToCreate.getConsultationState());
 
         engine.sendHttpDelete("http://localhost:8080/consultations/" + consultationAfterGet.getId());
         engine.sendHttpDelete("http://localhost:8080/doctors/" + doctorAfterGet.getId());

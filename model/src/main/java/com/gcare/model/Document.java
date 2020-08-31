@@ -26,6 +26,6 @@ public class Document extends BaseEntity {
     @JoinColumn(name = "PATIENT_ID", referencedColumnName = "id")
     private Patient patient;
 
-    @Column(name = "DOCUMENT_PATH")
-    private String documentPath;
+    @Column(name = "DOCUMENT_NAME")
+    private String documentName;
 }

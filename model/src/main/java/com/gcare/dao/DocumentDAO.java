@@ -22,9 +22,10 @@ public class DocumentDAO extends GenericDAO {
                 .getResultList().stream().findFirst().orElse(null);
     }
 
-    public Document getByPath(String documentPath) {
+    @Transactional
+    public Document getByPatientAndName(Integer patientId, String documentName) {
         return (Document) em.createQuery(
-                "SELECT c FROM Document c WHERE c.documentPath = '" + documentPath + "'")
+                "SELECT c FROM Document c WHERE c.documentName = '" + documentName + "'" + " AND c.patient = " + patientId)
                 .getResultList().stream().findFirst().orElse(null);
     }
 }

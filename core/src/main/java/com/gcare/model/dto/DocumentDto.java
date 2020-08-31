@@ -14,11 +14,11 @@ public class DocumentDto extends BaseDto {
 
     private Date creationDate;
     private Patient patient;
-    private String documentPath;
+    private String documentName;
 
-    public DocumentDto(Date creationDate, Patient patient, String documentPath) {
+    public DocumentDto(Date creationDate, Patient patient, String documentName) {
         this.creationDate = creationDate;
         this.patient = patient;
-        this.documentPath = documentPath;
+        this.documentName = documentName;
     }
 }
