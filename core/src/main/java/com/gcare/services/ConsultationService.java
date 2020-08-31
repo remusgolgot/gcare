@@ -42,8 +42,6 @@ public class ConsultationService {
     public Consultation updateConsultation(ConsultationDto consultationDto) throws Exception {
         Consultation entity = (Consultation) ClassUtils.copyPropertiesFromDTO(Consultation.class, consultationDto);
         try {
-            System.out.println("HERE");
-            System.out.println(entity.toString());
             return consultationDAO.update(entity);
         } catch (ConstraintViolationException e) {
             throw new Exception(ConstraintViolationsErrorBuilder.buildErrorMessageFromException(e));

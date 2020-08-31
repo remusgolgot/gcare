@@ -37,5 +37,9 @@ public final class Responses {
     public static final String PATIENT_NOT_FOUND_FOR_ID = "Patient not found for the given ID";
     public static final String CONSULTATION_NOT_FOUND = "Consultation not found for the given ID";
 
+    public static final String COULD_NOT_CREATE_FOLDER_EXCEPTION = "Could not create the directory where the uploaded files will be stored.";
+    public static final String COULD_NOT_STORE_FILE = "Could not store file ";
+    public static final String DOCUMENT_NOT_FOUND = "Document not found ";
+    public static final String INVALID_PATH_SEQUENCE_IN_FILENAME = "Filename contains invalid path sequence ";
 }
 
