@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.text.SimpleDateFormat;
 
 @RunWith(SpringRunner.class)
-public class PatientLifecycle {
+public class PatientLifecycleTest {
 
     private static final HttpRequestEngine engine = new HttpRequestEngine();
     private static final String dateFormat = "yyyy-MM-dd";
@@ -42,10 +42,10 @@ public class PatientLifecycle {
         PatientDto patientToCreate = createPatientEntity();
 
         String body = GsonUtils.gson.toJson(patientToCreate);
-        HttpResponse postResponse = engine.sendHttpPost("http://localhost:8080/patients", body);
+        HttpResponse postResponse = engine.sendHttpPost("http://localhost:9191/patients", body);
         Assert.assertEquals(200, engine.getResponseCode(postResponse));
 
-        String response = engine.sendHttpGet("http://localhost:8080/patients");
+        String response = engine.sendHttpGet("http://localhost:9191/patients");
         JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
         JsonElement patients = jsonObject.get("patients");
         JsonArray array = patients.getAsJsonArray();
@@ -58,9 +58,9 @@ public class PatientLifecycle {
         patientToUpdate.setCity("Vancouver");
 
         String putBody = GsonUtils.gson.toJson(patientToUpdate);
-        HttpResponse putResponse = engine.sendHttpPut("http://localhost:8080/patients/" + patientAfterGet.getId(), putBody);
+        HttpResponse putResponse = engine.sendHttpPut("http://localhost:9191/patients/" + patientAfterGet.getId(), putBody);
         Assert.assertEquals(200, engine.getResponseCode(putResponse));
-        response = engine.sendHttpGet("http://localhost:8080/patients");
+        response = engine.sendHttpGet("http://localhost:9191/patients");
         jsonObject = new JsonParser().parse(response).getAsJsonObject();
         patients = jsonObject.get("patients");
         array = patients.getAsJsonArray();
@@ -69,7 +69,7 @@ public class PatientLifecycle {
         Assert.assertEquals(patientAfterUpdateAndGet, patientToUpdate);
         Assert.assertNotEquals(patientAfterUpdateAndGet, patientToCreate);
 
-        engine.sendHttpDelete("http://localhost:8080/patients/" + patientAfterGet.getId());
+        engine.sendHttpDelete("http://localhost:9191/patients/" + patientAfterGet.getId());
     }
 
     @Test
@@ -78,7 +78,7 @@ public class PatientLifecycle {
         patientToCreate.setCountryCode("CCC");
 
         String body = GsonUtils.gson.toJson(patientToCreate);
-        HttpResponse postResponse = engine.sendHttpPost("http://localhost:8080/patients", body);
+        HttpResponse postResponse = engine.sendHttpPost("http://localhost:9191/patients", body);
         Assert.assertEquals(200, engine.getResponseCode(postResponse));
         String entityAsString = EntityUtils.toString(postResponse.getEntity(), "UTF-8");
         Assert.assertTrue(

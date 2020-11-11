@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.text.SimpleDateFormat;
 
 @RunWith(SpringRunner.class)
-public class ConsultationLifecycle {
+public class ConsultationLifecycleTest {
 
     private static final HttpRequestEngine engine = new HttpRequestEngine();
     private static final String dateFormat = "yyyy-MM-dd";
@@ -65,16 +65,16 @@ public class ConsultationLifecycle {
         DoctorDto doctorToCreate = createDoctorEntity();
 
         String body = GsonUtils.gson.toJson(doctorToCreate);
-        HttpResponse postResponse = engine.sendHttpPost("http://localhost:8080/doctors", body);
+        HttpResponse postResponse = engine.sendHttpPost("http://localhost:9191/doctors", body);
         Assert.assertEquals(200, engine.getResponseCode(postResponse));
 
         PatientDto patientToCreate = createPatientEntity();
 
         body = GsonUtils.gson.toJson(patientToCreate);
-        postResponse = engine.sendHttpPost("http://localhost:8080/patients", body);
+        postResponse = engine.sendHttpPost("http://localhost:9191/patients", body);
         Assert.assertEquals(200, engine.getResponseCode(postResponse));
 
-        String response = engine.sendHttpGet("http://localhost:8080/doctors");
+        String response = engine.sendHttpGet("http://localhost:9191/doctors");
         JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
         JsonElement doctors = jsonObject.get("doctors");
         JsonArray array = doctors.getAsJsonArray();
@@ -82,7 +82,7 @@ public class ConsultationLifecycle {
         DoctorDto doctorAfterGet = GsonUtils.gson.fromJson(array.get(0), DoctorDto.class);
         Assert.assertEquals(doctorAfterGet, doctorToCreate);
 
-        response = engine.sendHttpGet("http://localhost:8080/patients");
+        response = engine.sendHttpGet("http://localhost:9191/patients");
         jsonObject = new JsonParser().parse(response).getAsJsonObject();
         JsonElement patients = jsonObject.get("patients");
         array = patients.getAsJsonArray();
@@ -95,10 +95,10 @@ public class ConsultationLifecycle {
         consultationToCreate.setPatientID(patientAfterGet.getId());
 
         body = GsonUtils.gson.toJson(consultationToCreate);
-        postResponse = engine.sendHttpPost("http://localhost:8080/consultations", body);
+        postResponse = engine.sendHttpPost("http://localhost:9191/consultations", body);
         Assert.assertEquals(200, engine.getResponseCode(postResponse));
 
-        response = engine.sendHttpGet("http://localhost:8080/consultations");
+        response = engine.sendHttpGet("http://localhost:9191/consultations");
         jsonObject = new JsonParser().parse(response).getAsJsonObject();
         JsonElement consultations = jsonObject.get("consultations");
         array = consultations.getAsJsonArray();
@@ -116,9 +116,9 @@ public class ConsultationLifecycle {
         consultationToUpdate.setPatientID(patientAfterGet.getId());
 
         String putBody = GsonUtils.gson.toJson(consultationToUpdate);
-        HttpResponse putResponse = engine.sendHttpPut("http://localhost:8080/consultations/" + consultationAfterGet.getId(), putBody);
+        HttpResponse putResponse = engine.sendHttpPut("http://localhost:9191/consultations/" + consultationAfterGet.getId(), putBody);
         Assert.assertEquals(200, engine.getResponseCode(putResponse));
-        response = engine.sendHttpGet("http://localhost:8080/consultations");
+        response = engine.sendHttpGet("http://localhost:9191/consultations");
         jsonObject = new JsonParser().parse(response).getAsJsonObject();
         consultations = jsonObject.get("consultations");
         array = consultations.getAsJsonArray();
@@ -127,9 +127,9 @@ public class ConsultationLifecycle {
         Assert.assertEquals(consultationAfterUpdateAndGet.getConsultationState(), consultationToUpdate.getConsultationState());
         Assert.assertNotEquals(consultationAfterUpdateAndGet.getConsultationState(), consultationToCreate.getConsultationState());
 
-        engine.sendHttpDelete("http://localhost:8080/consultations/" + consultationAfterGet.getId());
-        engine.sendHttpDelete("http://localhost:8080/doctors/" + doctorAfterGet.getId());
-        engine.sendHttpDelete("http://localhost:8080/patients/" + patientAfterGet.getId());
+        engine.sendHttpDelete("http://localhost:9191/consultations/" + consultationAfterGet.getId());
+        engine.sendHttpDelete("http://localhost:9191/doctors/" + doctorAfterGet.getId());
+        engine.sendHttpDelete("http://localhost:9191/patients/" + patientAfterGet.getId());
     }
 
 }
